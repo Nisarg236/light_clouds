@@ -1,0 +1,4 @@
+/home/nisarg/light_clouds/build/CMakeFiles/rebuild_cache.dir
+/home/nisarg/light_clouds/build/CMakeFiles/edit_cache.dir
+/home/nisarg/light_clouds/build/CMakeFiles/light_clouds.dir
+/home/nisarg/light_clouds/build/CMakeFiles/test.dir

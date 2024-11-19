@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/light_clouds.dir/src/main.cpp.o  -o light_clouds 
