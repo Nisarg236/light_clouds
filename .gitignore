@@ -1,0 +1,19 @@
+# Compiled object files
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+
+# Directories
+build/
+include/.vscode/
+
+
+# Executables
+*.exe
+*.out
+*.app
+
+# CMake specific
+CMakeCache.txt
