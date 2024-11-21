@@ -3,28 +3,30 @@
 #include "PointCloud.hpp"
 #include "Filters.hpp"
 
-int PointDemo() {
+int PointDemo()
+{
     Point p1(1.0f, 2.0f, 3.0f);
     Point p2(4.0f, 5.0f, 6.0f);
-    
+
     p1.print();
     p2.print();
-    
+
     std::cout << "Distance between p1 and p2: " << p1.distanceTo(p2) << std::endl;
-    
+
     Point p3 = p1 + p2;
     p3.print();
-    
+
     float dotProduct = p1.dot(p2);
     std::cout << "Dot product: " << dotProduct << std::endl;
-    
+
     Point crossProduct = p1.cross(p2);
     crossProduct.print();
-    
+
     return 0;
 }
 
-int PointCloudDemo() {
+int PointCloudDemo()
+{
 
     Point p1(1.0f, 1.0f, 1.0f);
     Point p2(1.0f, 1.1f, 1.4f);
@@ -45,8 +47,8 @@ int PointCloudDemo() {
     Point centroidBefore = cloud.calculateCentroid();
     std::cout << "Centroid of the PointCloud (before SOR filter): ";
     centroidBefore.print();
-    
-    size_t k = 2; 
+
+    size_t k = 2;
     float threshold = 1.0f;
     Filters::applySOR(cloud, k, threshold);
 
@@ -60,8 +62,9 @@ int PointCloudDemo() {
     return 0;
 }
 
-int main() {
+int main()
+{
     PointDemo();
-    PointCloudDemo(); 
+    PointCloudDemo();
     return 0;
 }
