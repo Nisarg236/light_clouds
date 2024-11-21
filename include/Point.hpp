@@ -4,7 +4,8 @@
 #include <iostream>
 #include <cmath>
 
-class Point {
+class Point
+{
 public:
     float x, y, z;
 
@@ -22,48 +23,57 @@ public:
     void setY(float y) { this->y = y; }
     void setZ(float z) { this->z = z; }
 
-    void print() const {
+    void print() const
+    {
         std::cout << "x: " << x << " y: " << y << " z: " << z << std::endl;
     }
 
-    float distanceTo(const Point& other) const {
+    float distanceTo(const Point &other) const
+    {
         return std::sqrt(std::pow(other.x - x, 2) + std::pow(other.y - y, 2) + std::pow(other.z - z, 2));
     }
 
-    bool operator==(const Point& other) const {
+    bool operator==(const Point &other) const
+    {
         return (x == other.x && y == other.y && z == other.z);
     }
 
-    Point operator-(const Point& other) const {
+    Point operator-(const Point &other) const
+    {
         return Point(x - other.x, y - other.y, z - other.z);
     }
 
-    Point operator+(const Point& other) const {
+    Point operator+(const Point &other) const
+    {
         return Point(x + other.x, y + other.y, z + other.z);
     }
 
-    Point operator*(float scalar) const {
+    Point operator*(float scalar) const
+    {
         return Point(x * scalar, y * scalar, z * scalar);
     }
 
-    Point operator/(float scalar) const {
-        if (scalar != 0) {
+    Point operator/(float scalar) const
+    {
+        if (scalar != 0)
+        {
             return Point(x / scalar, y / scalar, z / scalar);
         }
         std::cerr << "Error: Division by zero!\n";
         return *this;
     }
 
-    float dot(const Point& other) const {
+    float dot(const Point &other) const
+    {
         return x * other.x + y * other.y + z * other.z;
     }
 
-    Point cross(const Point& other) const {
+    Point cross(const Point &other) const
+    {
         return Point(
             y * other.z - z * other.y,
             z * other.x - x * other.z,
-            x * other.y - y * other.x
-        );
+            x * other.y - y * other.x);
     }
 };
 
