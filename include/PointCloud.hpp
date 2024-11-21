@@ -74,6 +74,51 @@ public:
         return newCloud;
     }
 
+    Point getExtremePoint(char axis) {
+        if (points.empty()) {
+            throw std::runtime_error("PointCloud is empty.");
+        }
+
+        Point extremePoint = points[0];
+        float extremeValue;
+
+        switch(axis) {
+            case 'x': {
+                extremeValue = extremePoint.getX();
+                for (const auto& point : points) {
+                    if (point.getX() > extremeValue) {
+                        extremeValue = point.getX();
+                        extremePoint = point;
+                    }
+                }
+                break;
+            }
+            case 'y': {
+                extremeValue = extremePoint.getY();
+                for (const auto& point : points) {
+                    if (point.getY() > extremeValue) {
+                        extremeValue = point.getY();
+                        extremePoint = point;
+                    }
+                }
+                break;
+            }
+            case 'z': {
+                extremeValue = extremePoint.getZ();
+                for (const auto& point : points) {
+                    if (point.getZ() > extremeValue) {
+                        extremeValue = point.getZ();
+                        extremePoint = point;
+                    }
+                }
+                break;
+            }
+            default:
+                throw std::invalid_argument("Invalid axis input. Valid values are 'x', 'y', or 'z'.");
+        }
+        return extremePoint;
+    }
+
 };
 
 #endif // POINTCLOUD_HPP
