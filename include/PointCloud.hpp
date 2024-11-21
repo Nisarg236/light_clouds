@@ -49,17 +49,17 @@ public:
 
     Point calculateCentroid() const
     {
-        float sumX = 0, sumY = 0, sumZ = 0;
+        float sum_x = 0, sum_y = 0, sum_z = 0;
         for (const auto &point : points)
         {
-            sumX += point.getX();
-            sumY += point.getY();
-            sumZ += point.getZ();
+            sum_x += point.getX();
+            sum_y += point.getY();
+            sum_z += point.getZ();
         }
         size_t count = points.size();
         if (count > 0)
         {
-            return Point(sumX / count, sumY / count, sumZ / count);
+            return Point(sum_x / count, sum_y / count, sum_z / count);
         }
         else
         {
@@ -77,68 +77,68 @@ public:
 
     PointCloud operator+(const PointCloud &other) const
     {
-        PointCloud newCloud = *this;
+        PointCloud new_cloud = *this;
         for (const auto &point : other.points)
         {
-            newCloud.addPoint(point);
+            new_cloud.addPoint(point);
         }
-        return newCloud;
+        return new_cloud;
     }
 
     PointCloud operator+(const Point &other) const
     {
-        PointCloud newCloud = *this;
-        newCloud.addPoint(other);
-        return newCloud;
+        PointCloud new_cloud = *this;
+        new_cloud.addPoint(other);
+        return new_cloud;
     }
 
-    Point getExtremePoint(char axis)
+    Point getMaximumPointInAxis(char axis)
     {
         if (points.empty())
         {
             throw std::runtime_error("PointCloud is empty.");
         }
 
-        Point extremePoint = points[0];
-        float extremeValue;
+        Point max_point = points[0];
+        float max_value;
 
         switch (axis)
         {
         case 'x':
         {
-            extremeValue = extremePoint.getX();
+            max_value = max_point.getX();
             for (const auto &point : points)
             {
-                if (point.getX() > extremeValue)
+                if (point.getX() > max_value)
                 {
-                    extremeValue = point.getX();
-                    extremePoint = point;
+                    max_value = point.getX();
+                    max_point = point;
                 }
             }
             break;
         }
         case 'y':
         {
-            extremeValue = extremePoint.getY();
+            max_value = max_point.getY();
             for (const auto &point : points)
             {
-                if (point.getY() > extremeValue)
+                if (point.getY() > max_value)
                 {
-                    extremeValue = point.getY();
-                    extremePoint = point;
+                    max_value = point.getY();
+                    max_point = point;
                 }
             }
             break;
         }
         case 'z':
         {
-            extremeValue = extremePoint.getZ();
+            max_value = max_point.getZ();
             for (const auto &point : points)
             {
-                if (point.getZ() > extremeValue)
+                if (point.getZ() > max_value)
                 {
-                    extremeValue = point.getZ();
-                    extremePoint = point;
+                    max_value = point.getZ();
+                    max_point = point;
                 }
             }
             break;
@@ -146,8 +146,86 @@ public:
         default:
             throw std::invalid_argument("Invalid axis input. Valid values are 'x', 'y', or 'z'.");
         }
-        return extremePoint;
+        return max_point;
     }
+
+    Point getMinmumPointInAxis(char axis)
+    {
+        if (points.empty())
+        {
+            throw std::runtime_error("PointCloud is empty.");
+        }
+
+        Point min_point = points[0];
+        float min_value;
+
+        switch (axis)
+        {
+        case 'x':
+        {
+            min_value = min_point.getX();
+            for (const auto &point : points)
+            {
+                if (point.getX() < min_value)
+                {
+                    min_value = point.getX();
+                    min_point = point;
+                }
+            }
+            break;
+        }
+        case 'y':
+        {
+            min_value = min_point.getY();
+            for (const auto &point : points)
+            {
+                if (point.getY() < min_value)
+                {
+                    min_value = point.getY();
+                    min_point = point;
+                }
+            }
+            break;
+        }
+        case 'z':
+        {
+            min_value = min_point.getZ();
+            for (const auto &point : points)
+            {
+                if (point.getZ() > min_value)
+                {
+                    min_value = point.getZ();
+                    min_point = point;
+                }
+            }
+            break;
+        }
+        default:
+            throw std::invalid_argument("Invalid axis input. Valid values are 'x', 'y', or 'z'.");
+        }
+        return min_point;
+    }
+
+    PointCloud crop(float min_x, float max_x, float min_y, float max_y, float min_z, float max_z) const
+    {
+        PointCloud croppedCloud;
+        for (const auto &point : points)
+        {
+            float x = point.getX();
+            float y = point.getY();
+            float z = point.getZ();
+
+            // Check if the point lies within the bounds
+            if (x >= min_x && x <= max_x &&
+                y >= min_y && y <= max_y &&
+                z >= min_z && z <= max_z)
+            {
+                croppedCloud.addPoint(point);
+            }
+        }
+        return croppedCloud;
+    }
+
 };
 
 #endif // POINTCLOUD_HPP

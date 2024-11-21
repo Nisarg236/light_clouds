@@ -8,8 +8,22 @@ include_directories(include)
 
 enable_testing()
 
+add_subdirectory(external/googletest)
+
 set(SOURCES
     src/main.cpp
 )
 
 add_executable(light_clouds ${SOURCES})
+
+add_executable(light_clouds_tests
+    tests/point_cloud_tests.cpp
+)
+
+target_link_libraries(light_clouds_tests
+    gtest
+    gtest_main
+    pthread
+)
+
+add_test(NAME PointCloudTests COMMAND light_clouds_tests)
