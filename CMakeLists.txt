@@ -11,7 +11,7 @@ enable_testing()
 add_subdirectory(external/googletest)
 
 set(SOURCES
-    src/main.cpp
+    src/example.cpp
 )
 
 add_executable(light_clouds ${SOURCES})
