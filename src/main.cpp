@@ -16,11 +16,11 @@ int PointDemo()
     Point p3 = p1 + p2;
     p3.print();
 
-    float dotProduct = p1.dot(p2);
-    std::cout << "Dot product: " << dotProduct << std::endl;
+    float dot_product = p1.dot(p2);
+    std::cout << "Dot product: " << dot_product << std::endl;
 
-    Point crossProduct = p1.cross(p2);
-    crossProduct.print();
+    Point cross_product = p1.cross(p2);
+    cross_product.print();
 
     return 0;
 }
@@ -44,9 +44,9 @@ int PointCloudDemo()
     std::cout << "Points in the PointCloud (before SOR filter):" << std::endl;
     cloud.print();
 
-    Point centroidBefore = cloud.calculateCentroid();
+    Point centroid_before = cloud.calculateCentroid();
     std::cout << "Centroid of the PointCloud (before SOR filter): ";
-    centroidBefore.print();
+    centroid_before.print();
 
     size_t k = 2;
     float threshold = 1.0f;
@@ -55,9 +55,9 @@ int PointCloudDemo()
     std::cout << "\nPoints in the PointCloud (after SOR filter):" << std::endl;
     cloud.print();
 
-    Point centroidAfter = cloud.calculateCentroid();
+    Point centroid_after = cloud.calculateCentroid();
     std::cout << "Centroid of the PointCloud (after SOR filter): ";
-    centroidAfter.print();
+    centroid_after.print();
 
     return 0;
 }
