@@ -1,0 +1,43 @@
+name: Build and Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up CMake
+      uses: actions/setup-cmake@v3
+
+    - name: Cache CMake build
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cmake
+          ~/.cache
+        key: ${{ runner.os }}-cmake-${{ hashFiles('**/CMakeLists.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-cmake-
+
+    - name: Build project
+      run: |
+        mkdir -p build
+        cd build
+        cmake ..
+        make
+
+    - name: Check if build was successful
+      run: |
+        if [ $? -ne 0 ]; then
+          echo "Build failed!"
+          exit 1  # This will fail the job, preventing merge
+        else
+          echo "Build succeeded"
+        fi
