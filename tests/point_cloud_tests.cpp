@@ -12,7 +12,7 @@ TEST(PointCloudTest, AddPoint)
     EXPECT_EQ(cloud.getPoint(0).getZ(), 3);
 }
 
-// Test calculating centroid
+// Test centroid function
 TEST(PointCloudTest, Centroid)
 {
     PointCloud cloud({Point(1, 1, 1), Point(2, 2, 2), Point(3, 3, 3)});
