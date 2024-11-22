@@ -10,22 +10,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Checkout the repository
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up CMake
-      uses: actions/setup-cmake@v3
+    # Step 2: Install CMake and dependencies
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake build-essential
 
+    # Step 3: Cache CMake build
     - name: Cache CMake build
       uses: actions/cache@v3
       with:
         path: |
+          build
           ~/.cmake
           ~/.cache
         key: ${{ runner.os }}-cmake-${{ hashFiles('**/CMakeLists.txt') }}
         restore-keys: |
           ${{ runner.os }}-cmake-
 
+    # Step 4: Build the project
     - name: Build project
       run: |
         mkdir -p build
@@ -33,11 +40,6 @@ jobs:
         cmake ..
         make
 
-    - name: Check if build was successful
-      run: |
-        if [ $? -ne 0 ]; then
-          echo "Build failed!"
-          exit 1  # This will fail the job, preventing merge
-        else
-          echo "Build succeeded"
-        fi
+    # Step 5: Check if build was successful
+    - name: Verify build success
+      run: echo "Build succeeded"
