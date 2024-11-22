@@ -2,7 +2,8 @@
 #include "PointCloud.hpp"
 
 // Test adding points to PointCloud
-TEST(PointCloudTest, AddPoint) {
+TEST(PointCloudTest, AddPoint)
+{
     PointCloud cloud;
     cloud.addPoint(Point(1, 2, 3));
     ASSERT_EQ(cloud.size(), 1);
@@ -12,7 +13,8 @@ TEST(PointCloudTest, AddPoint) {
 }
 
 // Test calculating centroid
-TEST(PointCloudTest, Centroid) {
+TEST(PointCloudTest, Centroid)
+{
     PointCloud cloud({Point(1, 1, 1), Point(2, 2, 2), Point(3, 3, 3)});
     Point centroid = cloud.calculateCentroid();
     EXPECT_EQ(centroid.getX(), 2);
@@ -20,7 +22,8 @@ TEST(PointCloudTest, Centroid) {
     EXPECT_EQ(centroid.getZ(), 2);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
