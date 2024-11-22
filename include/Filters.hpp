@@ -7,6 +7,7 @@
 #include <iostream>
 #include <numeric>
 #include <unordered_map>
+#include <map>
 
 class Filters {
 public:
@@ -44,9 +45,32 @@ public:
         cloud.points.resize(j);
     }
 
-    static PointCloud applyVoxelGrid(const PointCloud& cloud, float voxel_size) {
-        //todo
+static PointCloud applyVoxelGrid(const PointCloud& cloud, float voxel_size) {
+    if (voxel_size <= 0) {
+        throw std::invalid_argument("Voxel size must be greater than 0.");
     }
+
+    std::map<std::tuple<int, int, int>, PointCloud> voxel_map;
+
+    for (const auto& point : cloud.points) {
+        int voxel_x = static_cast<int>(std::floor(point.getX() / voxel_size));
+        int voxel_y = static_cast<int>(std::floor(point.getY() / voxel_size));
+        int voxel_z = static_cast<int>(std::floor(point.getZ() / voxel_size));
+
+        std::tuple<int, int, int> voxel_key = std::make_tuple(voxel_x, voxel_y, voxel_z);
+        voxel_map[voxel_key].addPoint(point);
+    }
+
+    PointCloud filtered_cloud;
+
+    for (const auto& [voxel, voxel_points] : voxel_map) {
+        filtered_cloud.addPoint(voxel_points.calculateCentroid());
+    }
+
+    return filtered_cloud;
+}
+
+
 };
 
 #endif // FILTERS_HPP
