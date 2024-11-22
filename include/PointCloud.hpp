@@ -3,6 +3,10 @@
 
 #include <vector>
 #include "Point.hpp"
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <stdexcept>
 
 class PointCloud
 {
@@ -226,6 +230,126 @@ public:
         return croppedCloud;
     }
 
+    void loadFromPCD(const std::string &filename)
+    {
+        std::ifstream file(filename);
+        if (!file.is_open())
+        {
+            throw std::runtime_error("Unable to open file: " + filename);
+        }
+
+        size_t point_count = 0, data_start = 0;
+        if (!parseHeader(file, point_count, data_start))
+        {
+            throw std::runtime_error("Invalid PCD header.");
+        }
+
+        file.clear();
+        file.seekg(0, std::ios::beg);
+
+        std::string line;
+        for (size_t i = 0; i < data_start; ++i)
+        {
+            std::getline(file, line);
+        }
+
+        points.clear();
+        while (std::getline(file, line))
+        {
+            if (line.empty())
+                continue;
+
+            std::istringstream iss(line);
+            float x, y, z;
+
+            if (!(iss >> x >> y >> z))
+            {
+                throw std::runtime_error("Error parsing point data in PCD file.");
+            }
+
+            points.emplace_back(x, y, z);
+        }
+
+        if (points.size() != point_count)
+        {
+            std::cerr << "Warning: Parsed points (" << points.size()
+                      << ") do not match the declared count (" << point_count << ")." << std::endl;
+        }
+
+        file.close();
+    }
+
+    void dumpToPCD(const std::string &filename) const
+    {
+        std::ofstream file(filename);
+        if (!file.is_open())
+        {
+            throw std::runtime_error("Unable to open file: " + filename);
+        }
+
+        file << "# .PCD v0.7 - Point Cloud Data file format\n";
+        file << "VERSION 0.7\n";
+        file << "FIELDS x y z\n";
+        file << "SIZE 4 4 4\n";
+        file << "TYPE F F F\n";
+        file << "COUNT 1 1 1\n";
+        file << "WIDTH " << points.size() << "\n";
+        file << "HEIGHT 1\n";
+        file << "VIEWPOINT 0 0 0 1 0 0 0\n";
+        file << "POINTS " << points.size() << "\n";
+        file << "DATA ascii\n";
+
+        for (const auto &point : points)
+        {
+            file << point.getX() << " " << point.getY() << " " << point.getZ() << "\n";
+        }
+
+        file.close();
+
+        std::cout << "PointCloud saved to " << filename << std::endl;
+    }
+
+private:
+    bool parseHeader(std::ifstream &file, size_t &point_count, size_t &data_start)
+    {
+        std::string line;
+        size_t line_index = 0;
+        bool data_ascii = false;
+
+        while (std::getline(file, line))
+        {
+            ++line_index;
+            std::istringstream iss(line);
+            std::string key;
+
+            if (line.empty())
+                continue;
+
+            if (line.find("DATA") == 0)
+            {
+                std::string data_type;
+                iss >> key >> data_type;
+                if (data_type != "ascii")
+                {
+                    throw std::runtime_error("Only ASCII format is supported.");
+                }
+                data_ascii = true;
+                break;
+            }
+            else if (line.find("POINTS") == 0)
+            {
+                iss >> key >> point_count;
+            }
+        }
+
+        if (!data_ascii)
+        {
+            throw std::runtime_error("Failed to find ASCII data section in PCD file.");
+        }
+
+        data_start = line_index;
+        return true;
+    }
 };
 
 #endif // POINTCLOUD_HPP
