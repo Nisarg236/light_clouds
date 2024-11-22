@@ -29,7 +29,7 @@ void addPoint(const Point &point)
     const auto &tags = point.getTags();
     for (const auto &tag : tags)
     {
-        tagMap[tag].push_back(index); // Store index instead of pointer
+        tagMap[tag].push_back(index);
     }
 }
 
