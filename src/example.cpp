@@ -62,9 +62,23 @@ int PointCloudDemo()
     return 0;
 }
 
+int fileIODemo()
+{
+
+    PointCloud cloud;
+    cloud.loadFromPCD("/home/nisarg/light_clouds/files/lamppost.pcd");
+    cloud.print();
+    std::cout << "Centroid: ";
+    cloud.calculateCentroid().print();
+    cloud.dumpToPCD("/home/nisarg/light_clouds/files/output.pcd");
+
+    return 0;
+}
+
 int main()
 {
     PointDemo();
     PointCloudDemo();
+    fileIODemo();
     return 0;
 }
