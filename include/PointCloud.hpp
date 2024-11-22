@@ -7,11 +7,12 @@
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
-
+#include <unordered_map>
 class PointCloud
 {
 public:
     std::vector<Point> points;
+    std::unordered_map<std::string, std::vector<size_t>>tagMap;
 
     PointCloud() = default;
 
@@ -19,10 +20,18 @@ public:
 
     ~PointCloud() = default;
 
-    void addPoint(const Point &point)
+void addPoint(const Point &point)
+{
+    points.push_back(point);
+
+    // Add the new point's index to the tagMap
+    size_t index = points.size() - 1;
+    const auto &tags = point.getTags();
+    for (const auto &tag : tags)
     {
-        points.push_back(point);
+        tagMap[tag].push_back(index); // Store index instead of pointer
     }
+}
 
     size_t size() const
     {
@@ -47,7 +56,7 @@ public:
     {
         for (const auto &point : points)
         {
-            point.print();
+            point.print(1);
         }
     }
 
@@ -229,6 +238,32 @@ public:
         }
         return croppedCloud;
     }
+
+PointCloud getSubsetByTags(const std::set<std::string> &inputTags) const
+{
+    PointCloud subset;
+
+    for (const auto &tag : inputTags)
+    {
+        auto it = tagMap.find(tag);
+        if (it != tagMap.end())
+        {
+            for (const auto &index : it->second)
+            {
+                if (index < points.size()) // Ensure the index is valid
+                {
+                    subset.addPoint(points[index]);
+                }
+                else
+                {
+                    std::cerr << "Warning: Invalid index in tagMap for tag '" << tag << "'." << std::endl;
+                }
+            }
+        }
+    }
+
+    return subset;
+}
 
     void loadFromPCD(const std::string &filename)
     {
