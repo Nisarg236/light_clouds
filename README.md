@@ -4,7 +4,7 @@
 Welcome to **light_clouds**! This light weight library provides a powerful set of tools for working with 3D point clouds, specifically designed for robotics applications like 3D mapping, localisation, feature extraction and matching. With efficient data structures and direct impllementation of useful algorithms, this library allows you to process, filter, and analyze point cloud data for various robotics tasks.
 
 
-> **Note**: This project is a work in progress, and many more features are being added continuously. Contributions are always welcome!
+> **Note**: This project is a work in progress, and many more features are being added continuously. I am aware of current bugs and I will keep fixing them when I get time, feel free to raise issues. Contributions are always welcome!
 
 ## Some Planned Features
 
