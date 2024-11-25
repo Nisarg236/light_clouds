@@ -49,7 +49,7 @@ int PointCloudDemo()
 
     std::set<std::string> filterTags = {"theChoosenOne"};
     PointCloud filteredCloud = cloud.getSubsetByTags(filterTags);
-    std::cout<< "the points with tag theChoosenOne are: ";
+    std::cout << "the points with tag theChoosenOne are: ";
     filteredCloud.print();
 
     std::cout << "Points in the PointCloud (before SOR filter):" << std::endl;
@@ -78,39 +78,35 @@ int fileIODemo()
 
     PointCloud cloud;
     cloud.loadFromPCD("/home/nisarg/light_clouds/files/lamppost.pcd");
-    std::cout << "Input cloud has: "<< cloud.size() << "number of points" << std::endl;
+    std::cout << "Input cloud has: " << cloud.size() << "number of points" << std::endl;
     std::cout << "Centroid: ";
     cloud.calculateCentroid().print();
     cloud.dumpToPCD("/home/nisarg/light_clouds/files/output.pcd");
     return 0;
 }
 
-int ROIDemo(){
-    // Create some points
+int ROIDemo()
+{
     PointCloud cloud;
     cloud.addPoint(Point(1.0, 2.0, 3.0));
     cloud.addPoint(Point(4.0, 5.0, 6.0));
     cloud.addPoint(Point(7.0, 8.0, 9.0));
 
-    // Define ROI bounds
     float min_x = 2.0, max_x = 8.0;
     float min_y = 3.0, max_y = 10.0;
     float min_z = 2.0, max_z = 7.0;
 
-    // Get ROI object
     PointCloud::ROI roi = cloud.createROI(min_x, max_x, min_y, max_y, min_z, max_z);
 
-    // Print indices of points in ROI
     std::cout << "Indices of points in ROI:\n";
     for (size_t index : roi.indices)
     {
         std::cout << index << "\n";
     }
 
-    // Get the points in the ROI and print them
     std::vector<Point> roiPoints = roi.getPoints();
     std::cout << "\nPoints in ROI:\n";
-    for (const auto& point : roiPoints)
+    for (const auto &point : roiPoints)
     {
         point.print(1);
     }

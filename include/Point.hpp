@@ -15,7 +15,6 @@ public:
         tags.insert("point");
     }
 
-
     Point(float x, float y, float z) : x(x), y(y), z(z)
     {
         tags.insert("point");
@@ -51,7 +50,7 @@ public:
         return tags;
     }
 
-    void print(int mode=0) const
+    void print(int mode = 0) const
     {
         std::cout << x << ", " << y << ", " << z;
         if (!tags.empty() && mode == 1)

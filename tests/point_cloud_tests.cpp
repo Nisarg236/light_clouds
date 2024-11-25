@@ -29,14 +29,13 @@ int main(int argc, char **argv)
     return RUN_ALL_TESTS();
 }
 
-
 // Test PointCloud cropping function
 TEST(PointCloudTest, Crop)
 {
     PointCloud cloud({Point(1, 2, 3), Point(4, 5, 6), Point(7, 8, 9), Point(2, 3, 4)});
     PointCloud croppedCloud = cloud.crop(2, 6, 2, 6, 3, 6);
 
-    EXPECT_EQ(croppedCloud.size(), 2);  // Only points (4, 5, 6) and (2, 3, 4) should be in the cropped cloud
+    EXPECT_EQ(croppedCloud.size(), 2); // Only points (4, 5, 6) and (2, 3, 4) should be in the cropped cloud
 }
 
 // Test creating ROI (Region of Interest)
@@ -58,7 +57,7 @@ TEST(PointCloudTest, CreateROI)
 
     // Validate ROI indices
     ASSERT_EQ(roi.indices.size(), 1);
-    EXPECT_EQ(roi.indices[0], 1);  // Point (4.0, 5.0, 6.0) should be in the ROI
+    EXPECT_EQ(roi.indices[0], 1); // Point (4.0, 5.0, 6.0) should be in the ROI
 
     // Validate ROI points
     std::vector<Point> roiPoints = roi.getPoints();
@@ -95,10 +94,10 @@ TEST(PointCloudTest, GetSubsetByTags)
 TEST(PointCloudTest, EmptyCloud)
 {
     PointCloud cloud;
-    EXPECT_EQ(cloud.size(), 0);  // Cloud should be empty initially
+    EXPECT_EQ(cloud.size(), 0); // Cloud should be empty initially
 
     cloud.addPoint(Point(1, 2, 3));
-    EXPECT_EQ(cloud.size(), 1);  // Cloud should have one point after adding
+    EXPECT_EQ(cloud.size(), 1); // Cloud should have one point after adding
 }
 
 // Test PointCloud with tags
@@ -115,8 +114,8 @@ TEST(PointCloudTest, AddTags)
     cloud.addPoint(p1);
     cloud.addPoint(p2);
 
-    ASSERT_EQ(cloud.getPoint(0).getTags().size(), 3);  // Point 1 has 3 tags; first, point, tagged
-    ASSERT_EQ(cloud.getPoint(1).getTags().size(), 2);  // Point 2 has 2 tags; second, point
+    ASSERT_EQ(cloud.getPoint(0).getTags().size(), 3); // Point 1 has 3 tags; first, point, tagged
+    ASSERT_EQ(cloud.getPoint(1).getTags().size(), 2); // Point 2 has 2 tags; second, point
 }
 
 // Test distance between two points
@@ -126,7 +125,7 @@ TEST(PointTest, Distance)
     Point p2(2.0, 1.0, 1.0);
 
     float distance = p1.distanceTo(p2);
-    EXPECT_FLOAT_EQ(distance, 1.0);  // Distance should be sqrt((4-1)^2 + (5-2)^2 + (6-3)^2)
+    EXPECT_FLOAT_EQ(distance, 1.0); // Distance should be sqrt((4-1)^2 + (5-2)^2 + (6-3)^2)
 }
 
 // Test addition and multiplication of points

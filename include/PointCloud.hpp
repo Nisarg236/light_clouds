@@ -12,7 +12,7 @@ class PointCloud
 {
 public:
     std::vector<Point> points;
-    std::unordered_map<std::string, std::vector<size_t>>tagMap;
+    std::unordered_map<std::string, std::vector<size_t>> tagMap;
 
     PointCloud() = default;
 
@@ -21,62 +21,59 @@ public:
     ~PointCloud() = default;
 
     class ROI
+    {
+    public:
+        std::vector<size_t> indices;
+        const PointCloud *cloud;
+
+        ROI(const std::vector<size_t> &indices, const PointCloud *cloud)
+            : indices(indices), cloud(cloud) {}
+
+        std::vector<Point> getPoints() const
         {
-        public:
-            std::vector<size_t> indices;
-            const PointCloud* cloud;
-
-            ROI(const std::vector<size_t>& indices, const PointCloud* cloud)
-                : indices(indices), cloud(cloud) {}
-
-            std::vector<Point> getPoints() const
+            std::vector<Point> roiPoints;
+            for (size_t index : indices)
             {
-                std::vector<Point> roiPoints;
-                for (size_t index : indices)
-                {
-                    roiPoints.push_back(cloud->getPoint(index));
-                }
-                return roiPoints;
+                roiPoints.push_back(cloud->getPoint(index));
             }
-        };
+            return roiPoints;
+        }
+    };
 
-        ROI createROI(float min_x, float max_x, float min_y, float max_y, float min_z, float max_z) const
+    ROI createROI(float min_x, float max_x, float min_y, float max_y, float min_z, float max_z) const
+    {
+        std::vector<size_t> indices;
+
+        for (size_t i = 0; i < points.size(); ++i)
         {
-            std::vector<size_t> indices;
+            const Point &point = points[i];
 
-            // Iterate over points to check if they lie within the bounds
-            for (size_t i = 0; i < points.size(); ++i)
+            float x = point.getX();
+            float y = point.getY();
+            float z = point.getZ();
+
+            if (x >= min_x && x <= max_x &&
+                y >= min_y && y <= max_y &&
+                z >= min_z && z <= max_z)
             {
-                const Point& point = points[i];
-
-                float x = point.getX();
-                float y = point.getY();
-                float z = point.getZ();
-
-                if (x >= min_x && x <= max_x &&
-                    y >= min_y && y <= max_y &&
-                    z >= min_z && z <= max_z)
-                {
-                    indices.push_back(i);
-                }
+                indices.push_back(i);
             }
-
-            // Return the ROI object containing indices and the pointer to the cloud
-            return ROI(indices, this);
         }
 
-void addPoint(const Point &point)
-{
-    points.push_back(point);
-
-    // Add the new point's index to the tagMap
-    size_t index = points.size() - 1;
-    const auto &tags = point.getTags();
-    for (const auto &tag : tags)
-    {
-        tagMap[tag].push_back(index);
+        return ROI(indices, this);
     }
-}
+
+    void addPoint(const Point &point)
+    {
+        points.push_back(point);
+
+        size_t index = points.size() - 1;
+        const auto &tags = point.getTags();
+        for (const auto &tag : tags)
+        {
+            tagMap[tag].push_back(index);
+        }
+    }
 
     size_t size() const
     {
@@ -273,7 +270,6 @@ void addPoint(const Point &point)
             float y = point.getY();
             float z = point.getZ();
 
-            // Check if the point lies within the bounds
             if (x >= min_x && x <= max_x &&
                 y >= min_y && y <= max_y &&
                 z >= min_z && z <= max_z)
@@ -284,31 +280,31 @@ void addPoint(const Point &point)
         return croppedCloud;
     }
 
-PointCloud getSubsetByTags(const std::set<std::string> &inputTags) const
-{
-    PointCloud subset;
-
-    for (const auto &tag : inputTags)
+    PointCloud getSubsetByTags(const std::set<std::string> &inputTags) const
     {
-        auto it = tagMap.find(tag);
-        if (it != tagMap.end())
+        PointCloud subset;
+
+        for (const auto &tag : inputTags)
         {
-            for (const auto &index : it->second)
+            auto it = tagMap.find(tag);
+            if (it != tagMap.end())
             {
-                if (index < points.size()) // Ensure the index is valid
+                for (const auto &index : it->second)
                 {
-                    subset.addPoint(points[index]);
-                }
-                else
-                {
-                    std::cerr << "Warning: Invalid index in tagMap for tag '" << tag << "'." << std::endl;
+                    if (index < points.size())
+                    {
+                        subset.addPoint(points[index]);
+                    }
+                    else
+                    {
+                        std::cerr << "Warning: Invalid index in tagMap for tag '" << tag << "'." << std::endl;
+                    }
                 }
             }
         }
-    }
 
-    return subset;
-}
+        return subset;
+    }
 
     void loadFromPCD(const std::string &filename)
     {
