@@ -20,6 +20,51 @@ public:
 
     ~PointCloud() = default;
 
+    class ROI
+        {
+        public:
+            std::vector<size_t> indices;
+            const PointCloud* cloud;
+
+            ROI(const std::vector<size_t>& indices, const PointCloud* cloud)
+                : indices(indices), cloud(cloud) {}
+
+            std::vector<Point> getPoints() const
+            {
+                std::vector<Point> roiPoints;
+                for (size_t index : indices)
+                {
+                    roiPoints.push_back(cloud->getPoint(index));
+                }
+                return roiPoints;
+            }
+        };
+
+        ROI createROI(float min_x, float max_x, float min_y, float max_y, float min_z, float max_z) const
+        {
+            std::vector<size_t> indices;
+
+            // Iterate over points to check if they lie within the bounds
+            for (size_t i = 0; i < points.size(); ++i)
+            {
+                const Point& point = points[i];
+
+                float x = point.getX();
+                float y = point.getY();
+                float z = point.getZ();
+
+                if (x >= min_x && x <= max_x &&
+                    y >= min_y && y <= max_y &&
+                    z >= min_z && z <= max_z)
+                {
+                    indices.push_back(i);
+                }
+            }
+
+            // Return the ROI object containing indices and the pointer to the cloud
+            return ROI(indices, this);
+        }
+
 void addPoint(const Point &point)
 {
     points.push_back(point);

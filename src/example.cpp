@@ -85,10 +85,44 @@ int fileIODemo()
     return 0;
 }
 
+int ROIDemo(){
+    // Create some points
+    PointCloud cloud;
+    cloud.addPoint(Point(1.0, 2.0, 3.0));
+    cloud.addPoint(Point(4.0, 5.0, 6.0));
+    cloud.addPoint(Point(7.0, 8.0, 9.0));
+
+    // Define ROI bounds
+    float min_x = 2.0, max_x = 8.0;
+    float min_y = 3.0, max_y = 10.0;
+    float min_z = 2.0, max_z = 7.0;
+
+    // Get ROI object
+    PointCloud::ROI roi = cloud.createROI(min_x, max_x, min_y, max_y, min_z, max_z);
+
+    // Print indices of points in ROI
+    std::cout << "Indices of points in ROI:\n";
+    for (size_t index : roi.indices)
+    {
+        std::cout << index << "\n";
+    }
+
+    // Get the points in the ROI and print them
+    std::vector<Point> roiPoints = roi.getPoints();
+    std::cout << "\nPoints in ROI:\n";
+    for (const auto& point : roiPoints)
+    {
+        point.print(1);
+    }
+
+    return 0;
+}
+
 int main()
 {
     PointDemo();
     PointCloudDemo();
     fileIODemo();
+    ROIDemo();
     return 0;
 }
