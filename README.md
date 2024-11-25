@@ -142,8 +142,8 @@ cloud.dumpToPCD("output.pcd");
 ## Features Coming Soon
 
 - **Advanced Feature Extraction**: Functions for detecting and matching key features in point clouds, such as corners, edges, and surfaces.
-- **Visualization**: Integration with tools like VTK and PCL for real-time visualization of 3D point clouds.
-- **ROS Integration**: Full support for ROS1 and ROS2 for real-time robotics applications.
+- **Visualization**: Tool to visualize point clouds, edit and export.
+- **ROS Integration**: Support for ROS1 and ROS2 to make it easy to use in robotics applications.
 
 ---
 
