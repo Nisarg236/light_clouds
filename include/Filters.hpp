@@ -81,6 +81,50 @@ public:
 
         return filtered_cloud;
     }
+
+    static void applyROR(PointCloud &cloud, float radius, size_t min_neighbors) 
+    {
+        std::vector<bool> is_outlier(cloud.size(), false);
+
+        for (size_t i = 0; i < cloud.size(); ++i) {
+            size_t neighbor_count = 0;
+
+            for (size_t j = 0; j < cloud.size(); ++j) {
+                if (i != j && cloud.getPoint(i).distanceTo(cloud.getPoint(j)) < radius) {
+                    neighbor_count++;
+                }
+            }
+
+            if (neighbor_count < min_neighbors) {
+                is_outlier[i] = true;
+            }
+        }
+
+        size_t j = 0;
+        for (size_t i = 0; i < cloud.size(); ++i) {
+            if (!is_outlier[i]) {
+                cloud.points[j++] = cloud.getPoint(i);
+            }
+        }
+
+        cloud.points.resize(j);
+    }
+
+    static void applyPassThrough(PointCloud &cloud, float min_x, float max_x, float min_y, float max_y, float min_z, float max_z) 
+    {
+        size_t j = 0;
+
+        for (size_t i = 0; i < cloud.size(); ++i) {
+            const Point &point = cloud.getPoint(i);
+            if (point.x >= min_x && point.x <= max_x &&
+                point.y >= min_y && point.y <= max_y &&
+                point.z >= min_z && point.z <= max_z) {
+                cloud.points[j++] = point;
+            }
+        }
+
+        cloud.points.resize(j);
+    }
 };
 
 #endif // FILTERS_HPP
