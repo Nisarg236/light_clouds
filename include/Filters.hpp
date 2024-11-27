@@ -125,6 +125,33 @@ public:
 
         cloud.points.resize(j);
     }
+
+    static void applyMedianFilter(PointCloud &cloud, size_t k) {
+        PointCloud temp_cloud = cloud;
+
+        for (size_t i = 0; i < cloud.size(); ++i) {
+            std::vector<float> x_neighbors, y_neighbors, z_neighbors;
+
+            for (size_t j = 0; j < cloud.size(); ++j) {
+                if (i != j && temp_cloud.getPoint(i).distanceTo(temp_cloud.getPoint(j)) < k) {
+                    const Point &neighbor = temp_cloud.getPoint(j);
+                    x_neighbors.push_back(neighbor.x);
+                    y_neighbors.push_back(neighbor.y);
+                    z_neighbors.push_back(neighbor.z);
+                }
+            }
+
+            if (!x_neighbors.empty()) {
+                std::nth_element(x_neighbors.begin(), x_neighbors.begin() + x_neighbors.size() / 2, x_neighbors.end());
+                std::nth_element(y_neighbors.begin(), y_neighbors.begin() + y_neighbors.size() / 2, y_neighbors.end());
+                std::nth_element(z_neighbors.begin(), z_neighbors.begin() + z_neighbors.size() / 2, z_neighbors.end());
+
+                cloud.points[i].x = x_neighbors[x_neighbors.size() / 2];
+                cloud.points[i].y = y_neighbors[y_neighbors.size() / 2];
+                cloud.points[i].z = z_neighbors[z_neighbors.size() / 2];
+            }
+        }
+    }
 };
 
 #endif // FILTERS_HPP
