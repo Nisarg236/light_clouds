@@ -32,12 +32,8 @@ int PointCloudDemo()
     Point p2(1.0f, 1.1f, 1.4f);
     Point p3(1.0f, 1.2f, 1.3f);
     Point p4(1.0f, 1.3f, 1.2f);
-    p4.addTag("theChoosenOne");
-    p4.addTag("anotherTag");
     Point p5(10.0f, 1.4f, 1.1f); // Outlier point far away from the rest
-    p5.addTag("outlier");
     Point p6(1.0f, 1.0f, 1.0f);
-    p6.addTag("theChoosenOne");
 
     PointCloud cloud;
     cloud.addPoint(p1);
@@ -46,11 +42,6 @@ int PointCloudDemo()
     cloud.addPoint(p4);
     cloud.addPoint(p5);
     cloud.addPoint(p6);
-
-    std::set<std::string> filterTags = {"theChoosenOne"};
-    PointCloud filteredCloud = cloud.getSubsetByTags(filterTags);
-    std::cout<< "the points with tag theChoosenOne are: ";
-    filteredCloud.print();
 
     std::cout << "Points in the PointCloud (before SOR filter):" << std::endl;
     cloud.print();
