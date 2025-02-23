@@ -4,7 +4,7 @@ project(light_clouds)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-include_directories(include)
+include_directories(include/light_clouds)
 
 enable_testing()
 
