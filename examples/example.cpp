@@ -1,7 +1,7 @@
 #include <iostream>
-#include "Point.hpp"
-#include "PointCloud.hpp"
-#include "Filters.hpp"
+#include "light_clouds/Point.hpp"
+#include "light_clouds/PointCloud.hpp"
+#include "light_clouds/Filters.hpp"
 
 int PointDemo()
 {

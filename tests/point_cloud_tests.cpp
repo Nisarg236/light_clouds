@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "PointCloud.hpp"
-#include "Point.hpp"
+#include "light_clouds/PointCloud.hpp"
+#include "light_clouds/Point.hpp"
 
 // Test adding points to PointCloud
 TEST(PointCloudTest, AddPoint)
