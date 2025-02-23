@@ -11,7 +11,7 @@ Welcome to **light_clouds**! This light weight library provides a powerful set o
 - **Point and PointCloud Manipulation**:
    - Create and manage 3D points.
    - Perform common operations such as distance calculation, dot/cross products, and transformations.
-   - Ability to add custom tags like "corner", "surface1", etc. to points in a point cloud and access/manipulate them based on tags.
+
 
 - **Filtering**:
    - Apply filters for cleanup and noise removal.
@@ -22,10 +22,10 @@ Welcome to **light_clouds**! This light weight library provides a powerful set o
 - **File I/O**:
    - Load and save point clouds from and to PCD (Point Cloud Data) files, which is a standard format used in many point cloud applications.
 
-- **Visualization Support** (Coming Soon):
+- **Visualization Support** (Planned):
    - A visualisation tool to visualise and edit and export the point cloud.
 
-- **ROS Integration** (Planned):
+- **ROS Integration** (Coming soon!):
    - Integration with ROS1 and ROS2 to make it easy use in applications.
 
 ---
@@ -76,30 +76,7 @@ Point cross_product = p1.cross(p2);
 cross_product.print();
 ```
 
-### 2. **Working with PointClouds and Tags**
-
-```cpp
-Point p1(1.0f, 1.0f, 1.0f);
-Point p2(1.0f, 1.1f, 1.4f);
-Point p3(1.0f, 1.2f, 1.3f);
-Point p4(1.0f, 1.3f, 1.2f);
-p4.addTag("corner");
-Point p5(10.0f, 1.4f, 1.1f);
-p5.addTag("outlier");
-
-PointCloud cloud;
-cloud.addPoint(p1);
-cloud.addPoint(p2);
-cloud.addPoint(p3);
-cloud.addPoint(p4);
-cloud.addPoint(p5);
-
-std::set<std::string> filterTags = {"corner"};
-PointCloud filteredCloud = cloud.getSubsetByTags(filterTags);
-filteredCloud.print();
-```
-
-### 3. **Apply Statistical Outlier Removal (SOR) Filter**
+### 2. **Apply Statistical Outlier Removal (SOR) Filter**
 
 ```cpp
 // Print the points before filtering
