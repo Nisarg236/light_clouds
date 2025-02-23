@@ -8,8 +8,8 @@ int PointDemo()
     Point p1(1.0f, 2.0f, 3.0f);
     Point p2(4.0f, 5.0f, 6.0f);
 
-    p1.print(1);
-    p2.print(0);
+    p1.print();
+    p2.print();
 
     std::cout << "Distance between p1 and p2: " << p1.distanceTo(p2) << std::endl;
 
@@ -32,12 +32,8 @@ int PointCloudDemo()
     Point p2(1.0f, 1.1f, 1.4f);
     Point p3(1.0f, 1.2f, 1.3f);
     Point p4(1.0f, 1.3f, 1.2f);
-    p4.addTag("theChoosenOne");
-    p4.addTag("anotherTag");
     Point p5(10.0f, 1.4f, 1.1f); // Outlier point far away from the rest
-    p5.addTag("outlier");
     Point p6(1.0f, 1.0f, 1.0f);
-    p6.addTag("theChoosenOne");
 
     PointCloud cloud;
     cloud.addPoint(p1);
@@ -46,11 +42,6 @@ int PointCloudDemo()
     cloud.addPoint(p4);
     cloud.addPoint(p5);
     cloud.addPoint(p6);
-
-    std::set<std::string> filterTags = {"theChoosenOne"};
-    PointCloud filteredCloud = cloud.getSubsetByTags(filterTags);
-    std::cout << "the points with tag theChoosenOne are: ";
-    filteredCloud.print();
 
     std::cout << "Points in the PointCloud (before SOR filter):" << std::endl;
     cloud.print();
@@ -108,7 +99,7 @@ int ROIDemo()
     std::cout << "\nPoints in ROI:\n";
     for (const auto &point : roiPoints)
     {
-        point.print(1);
+        point.print();
     }
 
     return 0;
