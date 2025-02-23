@@ -12,22 +12,10 @@ public:
 
     Point() : x(0), y(0), z(0)
     {
-        tags.insert("point");
     }
 
     Point(float x, float y, float z) : x(x), y(y), z(z)
     {
-        tags.insert("point");
-    }
-
-    bool hasTag(const std::string &tag) const
-    {
-        return tags.find(tag) != tags.end();
-    }
-
-    void removeTag(const std::string &tag)
-    {
-        tags.erase(tag);
     }
 
     ~Point() {}
@@ -40,29 +28,10 @@ public:
     void setY(float y) { this->y = y; }
     void setZ(float z) { this->z = z; }
 
-    void addTag(const std::string &tag)
-    {
-        tags.insert(tag);
-    }
 
-    const std::set<std::string> &getTags() const
+    void print() const
     {
-        return tags;
-    }
-
-    void print(int mode = 0) const
-    {
-        std::cout << x << ", " << y << ", " << z;
-        if (!tags.empty() && mode == 1)
-        {
-            std::cout << " Tags: {";
-            for (const auto &tag : tags)
-            {
-                std::cout << tag << ", ";
-            }
-            std::cout << "\b\b}";
-        }
-        std::cout << std::endl;
+        std::cout << x << ", " << y << ", " << z << std::endl;
     }
 
     float distanceTo(const Point &other) const

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "PointCloud.hpp"
-#include "Point.hpp"
+#include "light_clouds/PointCloud.hpp"
+#include "light_clouds/Point.hpp"
 
 // Test adding points to PointCloud
 TEST(PointCloudTest, AddPoint)
@@ -67,29 +67,6 @@ TEST(PointCloudTest, CreateROI)
     EXPECT_EQ(roiPoints[0].getZ(), 6.0);
 }
 
-// Test getting subset of points by tags
-TEST(PointCloudTest, GetSubsetByTags)
-{
-    Point p1(1.0, 1.0, 1.0);
-    p1.addTag("group1");
-    Point p2(2.0, 2.0, 2.0);
-    p2.addTag("group2");
-    Point p3(3.0, 3.0, 3.0);
-    p3.addTag("group1");
-
-    PointCloud cloud;
-    cloud.addPoint(p1);
-    cloud.addPoint(p2);
-    cloud.addPoint(p3);
-
-    std::set<std::string> tags = {"group1"};
-    PointCloud subset = cloud.getSubsetByTags(tags);
-
-    ASSERT_EQ(subset.size(), 2);
-    EXPECT_EQ(subset.getPoint(0).getX(), 1.0);
-    EXPECT_EQ(subset.getPoint(1).getX(), 3.0);
-}
-
 // Test PointCloud size and empty check
 TEST(PointCloudTest, EmptyCloud)
 {
@@ -98,24 +75,6 @@ TEST(PointCloudTest, EmptyCloud)
 
     cloud.addPoint(Point(1, 2, 3));
     EXPECT_EQ(cloud.size(), 1); // Cloud should have one point after adding
-}
-
-// Test PointCloud with tags
-TEST(PointCloudTest, AddTags)
-{
-    Point p1(1.0, 1.0, 1.0);
-    p1.addTag("first");
-    p1.addTag("tagged");
-
-    Point p2(2.0, 2.0, 2.0);
-    p2.addTag("second");
-
-    PointCloud cloud;
-    cloud.addPoint(p1);
-    cloud.addPoint(p2);
-
-    ASSERT_EQ(cloud.getPoint(0).getTags().size(), 3); // Point 1 has 3 tags; first, point, tagged
-    ASSERT_EQ(cloud.getPoint(1).getTags().size(), 2); // Point 2 has 2 tags; second, point
 }
 
 // Test distance between two points
